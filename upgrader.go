@@ -52,13 +52,17 @@ func Upgrade(state BlockState) BlockState {
 			}
 		}
 
+		name, nameRenamed := s.renamedIDs[oldName]
+		if !nameRenamed {
+			name = oldName
+		}
+
 		properties := state.Properties
 		propertyAdded := s.applyPropertyAdded(oldName, properties)
 		propertyRemoved := s.applyPropertyRemoved(oldName, properties)
 		propertyRenamedOrValueChanged := s.applyPropertyRenamedOrValueChanged(oldName, properties)
 		propertyValueChanged := s.applyPropertyValueChanged(oldName, properties)
 
-		name, nameRenamed := s.renamedIDs[oldName]
 		if nameRenamed || propertyAdded || propertyRemoved || propertyRenamedOrValueChanged || propertyValueChanged {
 			state = BlockState{
 				Name:       name,
