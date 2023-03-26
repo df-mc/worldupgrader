@@ -3,6 +3,7 @@ package blockupgrader
 import (
 	"embed"
 	"encoding/json"
+	"github.com/df-mc/worldupgrader"
 	"strings"
 )
 
@@ -30,11 +31,11 @@ func init() {
 		if err != nil {
 			panic(err)
 		}
-		var m schemaModel
+		var m blockupgrader.schemaModel
 		if err = json.Unmarshal(buf, &m); err != nil {
 			panic(err)
 		}
-		s, err := parseSchemaModel(m)
+		s, err := blockupgrader.parseSchemaModel(m)
 		if err != nil {
 			panic(err)
 		}

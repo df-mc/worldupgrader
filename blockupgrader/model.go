@@ -1,6 +1,8 @@
 package blockupgrader
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // schemaModel represents the schema for loading block state upgrade data from a JSON file.
 type schemaModel struct {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/df-mc/blockupgrader"
+	"github.com/df-mc/worldupgrader/blockupgrader"
 	"github.com/kr/pretty"
 )
 

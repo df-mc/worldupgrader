@@ -1,4 +1,4 @@
-module github.com/df-mc/blockupgrader
+module github.com/df-mc/worldupgrader
 
 go 1.19
 
