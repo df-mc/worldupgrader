@@ -53,12 +53,13 @@ func parseSchemaModel(m schemaModel) (schema, error) {
 		maxVersionPatch:    m.MaxVersionPatch,
 		maxVersionRevision: m.MaxVersionRevision,
 
-		renamedIDs:             make(map[string]string),
+		renamedIDs:        m.RenamedIDs,
+		removedProperties: m.RemovedProperties,
+		renamedProperties: m.RenamedProperties,
+
 		addedProperties:        make(map[string]map[string]any),
-		removedProperties:      make(map[string][]string),
-		renamedProperties:      make(map[string]map[string]string),
-		remappedPropertyValues: make(map[string]map[string][]schemaValueRemap),
 		remappedStates:         make(map[string][]schemaBlockRemap),
+		remappedPropertyValues: make(map[string]map[string][]schemaValueRemap),
 	}
 
 	for blockName, properties := range m.AddedProperties {
