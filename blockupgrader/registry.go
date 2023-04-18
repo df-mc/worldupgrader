@@ -3,6 +3,8 @@ package blockupgrader
 import (
 	"embed"
 	"encoding/json"
+	"fmt"
+	"io"
 	"strings"
 )
 
@@ -26,18 +28,29 @@ func init() {
 		if !strings.HasSuffix(f.Name(), ".json") {
 			continue
 		}
-		buf, err := schemasFS.ReadFile("schemas/" + f.Name())
+		file, err := schemasFS.Open("schemas/" + f.Name())
 		if err != nil {
-			panic(err)
+			panic(fmt.Errorf("failed to open schema: %w", err))
 		}
-		var m schemaModel
-		if err = json.Unmarshal(buf, &m); err != nil {
-			panic(err)
-		}
-		s, err := parseSchemaModel(m)
+		err = RegisterSchema(file)
 		if err != nil {
-			panic(err)
+			panic(fmt.Errorf("failed to register schema: %w", err))
 		}
-		schemas = append(schemas, s)
 	}
+}
+
+// RegisterSchema attempts to decode and parse a schema from the provided file reader. The file must follow the correct
+// specification otherwise an error will be returned.
+func RegisterSchema(r io.Reader) error {
+	var m schemaModel
+	err := json.NewDecoder(r).Decode(&m)
+	if err != nil {
+		return err
+	}
+	s, err := parseSchemaModel(m)
+	if err != nil {
+		return err
+	}
+	schemas = append(schemas, s)
+	return nil
 }
