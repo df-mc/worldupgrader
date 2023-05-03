@@ -50,32 +50,14 @@
             "facing_direction": "facing_direction_00"
         },
         "minecraft:blast_furnace": {
-            "direction": "direction_01"
+            "direction": "direction_00"
         },
         "minecraft:smoker": {
-            "direction": "direction_01"
+            "direction": "direction_00"
         }
     },
     "remappedPropertyValuesIndex": {
-        "facing_direction_00": [
-            {
-                "old": {
-                    "int": 7
-                },
-                "new": {
-                    "int": 0
-                }
-            },
-            {
-                "old": {
-                    "int": 6
-                },
-                "new": {
-                    "int": 0
-                }
-            }
-        ],
-        "direction_01": [
+        "direction_00": [
             {
                 "old": {
                     "int": 0
@@ -98,6 +80,24 @@
                 },
                 "new": {
                     "int": 5
+                }
+            }
+        ],
+        "facing_direction_00": [
+            {
+                "old": {
+                    "int": 6
+                },
+                "new": {
+                    "int": 0
+                }
+            },
+            {
+                "old": {
+                    "int": 7
+                },
+                "new": {
+                    "int": 0
                 }
             }
         ]

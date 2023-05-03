@@ -22,9 +22,10 @@ type schemaModel struct {
 
 // schemaBlockRemapModel ...
 type schemaBlockRemapModel struct {
-	OldProperties map[string]schemaTagModel `json:"oldState"`
-	NewName       string                    `json:"newName"`
-	NewProperties map[string]schemaTagModel `json:"newState"`
+	OldProperties    map[string]schemaTagModel `json:"oldState"`
+	NewName          string                    `json:"newName"`
+	NewProperties    map[string]schemaTagModel `json:"newState"`
+	CopiedProperties []string                  `json:"copiedState"`
 }
 
 // schemaTagModel ...
@@ -119,9 +120,10 @@ func parseSchemaModel(m schemaModel) (schema, error) {
 				newProperties[name] = val
 			}
 			s.remappedStates[oldBlockName] = append(s.remappedStates[oldBlockName], schemaBlockRemap{
-				oldProperties: oldProperties,
-				newName:       remap.NewName,
-				newProperties: newProperties,
+				oldProperties:    oldProperties,
+				newName:          remap.NewName,
+				newProperties:    newProperties,
+				copiedProperties: remap.CopiedProperties,
 			})
 		}
 	}

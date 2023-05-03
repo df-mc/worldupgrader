@@ -49,17 +49,13 @@ func (state BlockState) upgrade() BlockState {
 		if _, ok := s.remappedStates[oldName]; ok {
 			var nextSchema bool
 			for _, remap := range s.remappedStates[oldName] {
-				if len(oldProperties) != len(remap.oldProperties) {
+				if len(remap.oldProperties) > len(oldProperties) {
 					continue
 				}
 
 				var nextState bool
-				for k, v := range oldProperties {
-					if _, ok := remap.oldProperties[k]; !ok {
-						nextState = true
-						break
-					}
-					if remap.oldProperties[k] != v {
+				for k, v := range remap.oldProperties {
+					if oldValue, ok := oldProperties[k]; !ok || oldValue != v {
 						nextState = true
 						break
 					}
@@ -67,10 +63,16 @@ func (state BlockState) upgrade() BlockState {
 				if nextState {
 					continue
 				}
+				newProperties := remap.newProperties
+				for _, k := range remap.copiedProperties {
+					if v, ok := oldProperties[k]; ok {
+						newProperties[k] = v
+					}
+				}
 
 				state, nextSchema = BlockState{
 					Name:       remap.newName,
-					Properties: remap.newProperties,
+					Properties: newProperties,
 					Version:    resVersion,
 				}, true
 				break

@@ -19,9 +19,10 @@ type schema struct {
 
 // schemaBlockRemap ...
 type schemaBlockRemap struct {
-	oldProperties map[string]any
-	newName       string
-	newProperties map[string]any
+	oldProperties    map[string]any
+	newName          string
+	newProperties    map[string]any
+	copiedProperties []string
 }
 
 // schemaValueRemap ...
