@@ -70,8 +70,19 @@ func (state BlockState) upgrade() BlockState {
 					}
 				}
 
+				newName := remap.newName
+				if newName == "" {
+					flattenedName := remap.newFlattenedName
+					flattenedValue, ok := oldProperties[flattenedName.FlattenedProperty].(string)
+					if !ok {
+						continue
+					}
+					newName = flattenedName.Prefix + flattenedValue + flattenedName.Suffix
+					delete(oldProperties, flattenedName.FlattenedProperty)
+				}
+
 				state, nextSchema = BlockState{
-					Name:       remap.newName,
+					Name:       newName,
 					Properties: newProperties,
 					Version:    resVersion,
 				}, true

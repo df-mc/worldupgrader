@@ -21,6 +21,7 @@ type schema struct {
 type schemaBlockRemap struct {
 	oldProperties    map[string]any
 	newName          string
+	newFlattenedName schemaFlattenedName
 	newProperties    map[string]any
 	copiedProperties []string
 }

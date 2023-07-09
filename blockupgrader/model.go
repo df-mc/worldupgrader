@@ -24,8 +24,16 @@ type schemaModel struct {
 type schemaBlockRemapModel struct {
 	OldProperties    map[string]schemaTagModel `json:"oldState"`
 	NewName          string                    `json:"newName"`
+	NewFlattenedName schemaFlattenedName       `json:"newFlattenedName"`
 	NewProperties    map[string]schemaTagModel `json:"newState"`
 	CopiedProperties []string                  `json:"copiedState"`
+}
+
+// schemaFlattenedName ...
+type schemaFlattenedName struct {
+	Prefix            string `json:"prefix"`
+	FlattenedProperty string `json:"flattenedProperty"`
+	Suffix            string `json:"suffix"`
 }
 
 // schemaTagModel ...
@@ -122,6 +130,7 @@ func parseSchemaModel(m schemaModel) (schema, error) {
 			s.remappedStates[oldBlockName] = append(s.remappedStates[oldBlockName], schemaBlockRemap{
 				oldProperties:    oldProperties,
 				newName:          remap.NewName,
+				newFlattenedName: remap.NewFlattenedName,
 				newProperties:    newProperties,
 				copiedProperties: remap.CopiedProperties,
 			})
