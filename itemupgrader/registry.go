@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	//go:embed schemas/*.json
+	//go:embed remote/id_meta_upgrade_schema/*.json
 	schemasFS embed.FS
 	// schemas is a list of all registered item upgrade schemas.
 	schemas []schemaModel
@@ -17,7 +17,7 @@ var (
 
 // init ...
 func init() {
-	files, err := schemasFS.ReadDir("schemas")
+	files, err := schemasFS.ReadDir("remote/id_meta_upgrade_schema")
 	if err != nil {
 		panic(err)
 	}
@@ -28,7 +28,7 @@ func init() {
 		if !strings.HasSuffix(f.Name(), ".json") {
 			continue
 		}
-		file, err := schemasFS.Open("schemas/" + f.Name())
+		file, err := schemasFS.Open("remote/id_meta_upgrade_schema/" + f.Name())
 		if err != nil {
 			panic(fmt.Errorf("failed to open schema: %w", err))
 		}
