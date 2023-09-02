@@ -6,4 +6,4 @@ Worldupgrader upgrades Minecraft Bedrock Edition worlds and their components to 
 
 
 Block state upgrading is heavily inspired by [PMMP's block state conversion code](https://github.com/pmmp/PocketMine-MP/tree/major-next/src/data/bedrock/block/upgrade) and uses
-their [block state upgrade schemas](https://github.com/pmmp/BedrockBlockUpgradeSchema) at heart.
+their [block state upgrade schemas](https://github.com/pmmp/BedrockBlockUpgradeSchema) at heart. Item upgrading also uses their [item upgrade schemas](https://github.com/pmmp/BedrockItemUpgradeSchema).
