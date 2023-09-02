@@ -1,9 +1,5 @@
 package itemupgrader
 
-import (
-	"fmt"
-)
-
 // Item holds the data that identifies an item. It is implemented by ItemMeta.
 type Item interface {
 	upgrade() ItemMeta
@@ -26,20 +22,16 @@ type ItemMeta struct {
 // upgrade upgrades an ItemMeta to a new ItemMeta, changing its Name and Meta if necessary.
 func (item ItemMeta) upgrade() ItemMeta {
 	for _, s := range schemas {
-		name, nameRenamed := s.RenamedIDs[item.Name]
-		if !nameRenamed {
-			name = item.Name
+		if name, ok := s.RenamedIDs[item.Name]; ok {
+			item.Name = name
+			continue
 		}
-		meta := item.Meta
-		if remappedMetas, ok := s.RemappedMetas[name]; ok {
-			if newName, ok := remappedMetas[fmt.Sprintf("%d", meta)]; ok {
-				name = newName
-				meta = 0
+		if remappedMetas, ok := s.RemappedMetas[item.Name]; ok {
+			if newName, ok := remappedMetas[item.Meta]; ok {
+				item.Name = newName
+				item.Meta = 0
+				continue
 			}
-		}
-		item = ItemMeta{
-			Name: name,
-			Meta: meta,
 		}
 	}
 	return item
