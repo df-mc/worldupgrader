@@ -3,12 +3,18 @@
 
 ## Contents
 ### `nbt_upgrade_schema/*.json`
-These schemas describe how to upgrade blockstate NBT from one version to the next. The structure of the schema is described in `nbt_upgrade_schema_schema.json`. An example implementation can be seen [in PocketMine-MP 5.0.0-ALPHA2](https://github.com/pmmp/PocketMine-MP/blob/ccb3c3cb05e6eee8afa15d7837e256a446244fe7/src/data/bedrock/block/upgrade/BlockStateUpgrader.php#L33).
+These schemas describe how to upgrade blockstate NBT from one version to the next. The structure of the schema is described in `nbt_upgrade_schema_schema.json`. An example implementation can be seen [in PocketMine-MP 5.4.2](https://github.com/pmmp/PocketMine-MP/blob/5.4.2/src/data/bedrock/block/upgrade/BlockStateUpgrader.php#L37).
 
-#### Gotchas
+#### Notes
 - Mojang don't always bump the format version when making backwards-incompatible changes. A prominent example of this is in the [`0131_1.18.20.27_beta_to_1.18.30.json`](/nbt_upgrade_schema/0131_1.18.20.27_beta_to_1.18.30.json).
-- `remappedPropertyValues` always uses the old property name, if the names were changed.
-- `remappedStates` must always be applied first, and in the order given by the JSON. If a blockstate undergoes a state remap, it must not receive any other modifications (the newly mapped state will be correct for the new version).
+- `remappedStates` requires different treatment than other rules:
+  - It **must have highest priority**
+  - If a blockstate matches a remap rule, **do not apply any other transformations** (the newly mapped state will be correct for the new version).
+  - `oldState` acts as a **search criteria, not an exact match**.
+    - Because of this, the remapped state rules must be tested in the order of most criteria to least criteria (this is the order they are provided in by the JSON).
+    - For example, the transformation of `minecraft:concrete` with `silver` colour is different from other colours, as seen in [`0201_1.20.0.23_beta_to_1.20.10.24_beta.json`](/nbt_upgrade_schema/0201_1.20.0.23_beta_to_1.20.10.24_beta.json#L69-L88). If matches were tested in the wrong order, `silver` concrete would be transformed incorrectly.
+- With the exception of `remappedStates`, modifications can be applied in any order, e.g. `renamedIds` can be applied before or after `renamedProperties`.
+  - To facilitate this, `addedProperties`, `renamedProperties`, `removedProperties` and `remappedPropertyValues` always use the old blockID and old property names for indexing.
 
 ### `block_legacy_id_map.json`
 This JSON file contains a mapping of string ID -> legacy ID for all blocks known up 1.16.0.
@@ -40,7 +46,7 @@ The file is structured as described below.
 
 First, you need to get a `.bin` mapping file, which you can obtain using the current version of BDS + [pmmp/mapping mod](https://github.com/pmmp/mapping). It requires that you place the palette for the previous version in `input_files/old_block_palettes`.
 
-The output file will be placed in `mapping_files/old_palette_mappings`. This file is then provided as the input for the [schema generator script](https://github.com/pmmp/PocketMine-MP/blob/e98cf39b47c6c37619cae32d2d2596b08f4d938f/tools/generate-blockstate-upgrade-schema.php), which produces the JSON schemas like the ones you see in this repo.
+The output file will be placed in `mapping_files/old_palette_mappings`. This file is then provided as the input for the [schema generator script](https://github.com/pmmp/PocketMine-MP/blob/5.4.2/tools/generate-blockstate-upgrade-schema.php), which produces the JSON schemas like the ones you see in this repo.
 
 Currently the code needed for this is baked into an experimental branch of PocketMine-MP; it's planned to separate it into its own library in the future.
 
