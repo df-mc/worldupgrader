@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	//go:embed remote/nbt_upgrade_schema/*.json
+	//go:embed schemas/*.json
 	schemasFS embed.FS
 	// schemas is a list of all registered block state upgrade schemas.
 	schemas []schema
@@ -17,7 +17,7 @@ var (
 
 // init ...
 func init() {
-	files, err := schemasFS.ReadDir("remote/nbt_upgrade_schema")
+	files, err := schemasFS.ReadDir("schemas")
 	if err != nil {
 		panic(err)
 	}
@@ -28,7 +28,7 @@ func init() {
 		if !strings.HasSuffix(f.Name(), ".json") {
 			continue
 		}
-		file, err := schemasFS.Open("remote/nbt_upgrade_schema/" + f.Name())
+		file, err := schemasFS.Open("schemas/" + f.Name())
 		if err != nil {
 			panic(fmt.Errorf("failed to open schema: %w", err))
 		}
