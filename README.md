@@ -8,13 +8,8 @@ Worldupgrader upgrades Minecraft Bedrock Edition worlds and their components to 
 
 ## Credits
 
-Block state and item upgrading is done by using PMMP's generated upgrade schemas. These schemas are stored in this
-repository using subtrees, which can be updated using the following commands. If you want to target a specific branch,
-then replace master with the name of the branch you wish to use.
+Block state and item upgrading is done by using PMMP's generated upgrade schemas. You can use `update.sh` to update to
+the latest commits.
 
-```shell
-git subtree pull --prefix blockupgrader/remote https://github.com/pmmp/BedrockBlockUpgradeSchema.git master --squash
-```
-```shell
-git subtree pull --prefix itemupgrader/remote https://github.com/pmmp/BedrockItemUpgradeSchema.git master --squash
-```
+- `blockupgrader/remote`: [BedrockBlockUpgradeSchema](https://github.com/pmmp/BedrockBlockUpgradeSchema)
+- `itemupgrader/remote`: [BedrockItemUpgradeSchema](https://github.com/pmmp/BedrockItemUpgradeSchema)

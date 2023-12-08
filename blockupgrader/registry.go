@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	//go:embed remote/nbt_upgrade_schema/*.json
+	//go:embed schemas/*.json
 	schemasFS embed.FS
 	// schemas is a list of all registered block state upgrade schemas.
 	schemas []schema

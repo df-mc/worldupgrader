@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	//go:embed remote/id_meta_upgrade_schema/*.json
+	//go:embed schemas/*.json
 	schemasFS embed.FS
 	// schemas is a list of all registered item upgrade schemas.
 	schemas []schemaModel
