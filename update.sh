@@ -9,4 +9,4 @@ ITEM_COMMIT=$(git -C BedrockItemUpgradeSchema rev-parse HEAD)
 rm -rf BedrockBlockUpgradeSchema BedrockItemUpgradeSchema
 
 git add blockupgrader/schemas itemupgrader/schemas
-git commit -m "Updated upgrade schemas from https://github.com/pmmp/BedrockBlockUpgradeSchema/commit/$BLOCK_COMMIT and https://github.com/pmmp/BedrockItemUpgradeSchema/$ITEM_COMMIT"
+git commit -m "Updated upgrade schemas from https://github.com/pmmp/BedrockBlockUpgradeSchema/commit/$BLOCK_COMMIT and https://github.com/pmmp/BedrockItemUpgradeSchema/commit/$ITEM_COMMIT"
