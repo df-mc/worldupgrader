@@ -1,5 +1,7 @@
 package blockupgrader
 
+import "maps"
+
 // Block holds the data that identifies a block. It is implemented by BlockState
 // and BlockMeta.
 type Block interface {
@@ -63,7 +65,7 @@ func (state BlockState) upgrade() BlockState {
 				if nextState {
 					continue
 				}
-				newProperties := remap.newProperties
+				newProperties := maps.Clone(remap.newProperties)
 				for _, k := range remap.copiedProperties {
 					if v, ok := oldProperties[k]; ok {
 						newProperties[k] = v
