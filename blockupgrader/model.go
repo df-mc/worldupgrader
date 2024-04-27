@@ -31,9 +31,10 @@ type schemaBlockRemapModel struct {
 
 // schemaFlattenedName ...
 type schemaFlattenedName struct {
-	Prefix            string `json:"prefix"`
-	FlattenedProperty string `json:"flattenedProperty"`
-	Suffix            string `json:"suffix"`
+	Prefix               string            `json:"prefix"`
+	FlattenedProperty    string            `json:"flattenedProperty"`
+	Suffix               string            `json:"suffix"`
+	FlattenedValueRemaps map[string]string `json:"flattenedValueRemaps"`
 }
 
 // schemaTagModel ...

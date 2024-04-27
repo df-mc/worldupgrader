@@ -79,6 +79,9 @@ func (state BlockState) upgrade() BlockState {
 					if !ok {
 						continue
 					}
+					if valueRemap, ok := flattenedName.FlattenedValueRemaps[flattenedValue]; ok {
+						flattenedValue = valueRemap
+					}
 					newName = flattenedName.Prefix + flattenedValue + flattenedName.Suffix
 					delete(oldProperties, flattenedName.FlattenedProperty)
 				}

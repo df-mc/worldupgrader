@@ -58,6 +58,20 @@ func TestBlockRemappedPropertyValues(t *testing.T) {
 	assert.Equal(t, int32(18095666), upgraded.Version)
 }
 
+func TestBlockFlattenedValueRemap(t *testing.T) {
+	state := blockupgrader.BlockState{
+		Name: "minecraft:wool",
+		Properties: map[string]any{
+			"color": "silver",
+		},
+		Version: 17825806,
+	}
+	upgraded := blockupgrader.Upgrade(state)
+	assert.Equal(t, "minecraft:light_gray_wool", upgraded.Name)
+	assert.Equal(t, map[string]any{}, upgraded.Properties)
+	assert.Equal(t, int32(18040335), upgraded.Version)
+}
+
 func TestItemRenamedID(t *testing.T) {
 	item := itemupgrader.ItemMeta{
 		Name: "minecraft:record_relic",
