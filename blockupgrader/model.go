@@ -17,6 +17,7 @@ type schemaModel struct {
 	RenamedProperties           map[string]map[string]string         `json:"renamedProperties,omitempty"`
 	RemappedPropertyValues      map[string]map[string]string         `json:"remappedPropertyValues,omitempty"`
 	RemappedPropertyValuesIndex map[string][]schemaValueRemapModel   `json:"remappedPropertyValuesIndex,omitempty"`
+	FlattenedProperties         map[string]schemaFlattenInfo         `json:"flattenedProperties,omitempty"`
 	RemappedStates              map[string][]schemaBlockRemapModel   `json:"remappedStates,omitempty"`
 }
 
@@ -24,17 +25,18 @@ type schemaModel struct {
 type schemaBlockRemapModel struct {
 	OldProperties    map[string]schemaTagModel `json:"oldState"`
 	NewName          string                    `json:"newName"`
-	NewFlattenedName schemaFlattenedName       `json:"newFlattenedName"`
+	NewFlattenedName schemaFlattenInfo         `json:"newFlattenedName"`
 	NewProperties    map[string]schemaTagModel `json:"newState"`
 	CopiedProperties []string                  `json:"copiedState"`
 }
 
-// schemaFlattenedName ...
-type schemaFlattenedName struct {
-	Prefix               string            `json:"prefix"`
-	FlattenedProperty    string            `json:"flattenedProperty"`
-	Suffix               string            `json:"suffix"`
-	FlattenedValueRemaps map[string]string `json:"flattenedValueRemaps"`
+// schemaFlattenInfo ...
+type schemaFlattenInfo struct {
+	Prefix                string            `json:"prefix"`
+	FlattenedProperty     string            `json:"flattenedProperty"`
+	Suffix                string            `json:"suffix"`
+	FlattenedValueRemaps  map[string]string `json:"flattenedValueRemaps"`
+	FlattenedPropertyType string            `json:"flattenedPropertyType"`
 }
 
 // schemaTagModel ...
@@ -63,9 +65,10 @@ func parseSchemaModel(m schemaModel) (schema, error) {
 		maxVersionPatch:    m.MaxVersionPatch,
 		maxVersionRevision: m.MaxVersionRevision,
 
-		renamedIDs:        m.RenamedIDs,
-		removedProperties: m.RemovedProperties,
-		renamedProperties: m.RenamedProperties,
+		renamedIDs:          m.RenamedIDs,
+		removedProperties:   m.RemovedProperties,
+		renamedProperties:   m.RenamedProperties,
+		flattenedProperties: m.FlattenedProperties,
 
 		addedProperties:        make(map[string]map[string]any),
 		remappedStates:         make(map[string][]schemaBlockRemap),

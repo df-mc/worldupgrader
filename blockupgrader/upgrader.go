@@ -1,6 +1,9 @@
 package blockupgrader
 
-import "maps"
+import (
+	"fmt"
+	"maps"
+)
 
 // Block holds the data that identifies a block. It is implemented by BlockState
 // and BlockMeta.
@@ -74,16 +77,7 @@ func (state BlockState) upgrade() BlockState {
 
 				newName := remap.newName
 				if newName == "" {
-					flattenedName := remap.newFlattenedName
-					flattenedValue, ok := oldProperties[flattenedName.FlattenedProperty].(string)
-					if !ok {
-						continue
-					}
-					if valueRemap, ok := flattenedName.FlattenedValueRemaps[flattenedValue]; ok {
-						flattenedValue = valueRemap
-					}
-					newName = flattenedName.Prefix + flattenedValue + flattenedName.Suffix
-					delete(oldProperties, flattenedName.FlattenedProperty)
+					newName, _ = s.applyPropertyFlattened(remap.newFlattenedName, oldName, oldProperties)
 				}
 
 				state, nextSchema = BlockState{
@@ -98,18 +92,23 @@ func (state BlockState) upgrade() BlockState {
 			}
 		}
 
+		properties := state.Properties
 		name, nameRenamed := s.renamedIDs[oldName]
-		if !nameRenamed {
+		info, flattened := s.flattenedProperties[oldName]
+		if nameRenamed && flattened {
+			panic(fmt.Errorf("both renamedIds and flattenedProperties are set the for the same block ID \"%s\" - don't know what to do", oldName))
+		} else if flattened {
+			name, properties = s.applyPropertyFlattened(info, oldName, properties)
+		} else if !nameRenamed {
 			name = oldName
 		}
 
-		properties := state.Properties
 		propertyAdded := s.applyPropertyAdded(oldName, properties)
 		propertyRemoved := s.applyPropertyRemoved(oldName, properties)
 		propertyRenamedOrValueChanged := s.applyPropertyRenamedOrValueChanged(oldName, properties)
 		propertyValueChanged := s.applyPropertyValueChanged(oldName, properties)
 
-		if nameRenamed || propertyAdded || propertyRemoved || propertyRenamedOrValueChanged || propertyValueChanged {
+		if nameRenamed || flattened || propertyAdded || propertyRemoved || propertyRenamedOrValueChanged || propertyValueChanged {
 			state = BlockState{
 				Name:       name,
 				Properties: properties,
