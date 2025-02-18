@@ -110,6 +110,9 @@ func (s schema) applyPropertyFlattened(info schemaFlattenInfo, oldName string, p
 			embedKey = v
 		}
 	case "int":
+		if v, ok := val.(int32); ok {
+			val = int(v)
+		}
 		if v, ok := val.(int); ok {
 			embedKey = strconv.Itoa(v)
 		}
