@@ -1,8 +1,8 @@
 {
     "maxVersionMajor": 1,
     "maxVersionMinor": 21,
-    "maxVersionPatch": 60,
-    "maxVersionRevision": 33,
+    "maxVersionPatch": 110,
+    "maxVersionRevision": 26,
     "renamedIds": {
         "minecraft:chain": "minecraft:iron_chain"
     },
