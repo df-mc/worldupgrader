@@ -1,0 +1,7 @@
+{
+    "remappedMetas": {
+        "minecraft:chest_boat": {
+            "10": "minecraft:poplar_chest_boat"
+        }
+    }
+}
